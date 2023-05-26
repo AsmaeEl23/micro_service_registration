@@ -37,15 +37,13 @@ public class RegistrationGrpcController extends RegistrationServiceGrpc.Registra
     @Override
     public void getOwner(Registration.OwnerId request, StreamObserver<Registration.Owner> responseObserver) {
         Long ownerId = (long)request.getId();
-        if(ownerRepository.existsById(ownerId)){
-            Owner owner = ownerRepository.findById(ownerId).orElse(null);
-            Registration.Owner ownerResponse = Registration.Owner.newBuilder()
-                    .setId(owner.getId().intValue())
-                    .setName(owner.getName())
-                    .setEmail(owner.getEmail())
-                    .build();
-            responseObserver.onNext(ownerResponse);
-        }
+        Owner owner = ownerRepository.findById(ownerId).orElse(null);
+        Registration.Owner ownerResponse = Registration.Owner.newBuilder()
+                .setId(owner.getId().intValue())
+                .setName(owner.getName())
+                .setEmail(owner.getEmail())
+                .build();
+        responseObserver.onNext(ownerResponse);
         responseObserver.onCompleted();
     }
 
